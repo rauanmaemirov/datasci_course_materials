@@ -1,0 +1,6 @@
+SELECT COUNT(1) 
+FROM Frequency 
+WHERE term='world' AND docid IN (
+	SELECT docid 
+	FROM Frequency 
+	WHERE term = 'transaction');

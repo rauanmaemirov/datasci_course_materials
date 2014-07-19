@@ -1,0 +1,6 @@
+SELECT COUNT(1) FROM (
+    SELECT docid, SUM(count) AS term_count
+    FROM Frequency
+    GROUP BY docid
+    HAVING term_count > 300
+);
