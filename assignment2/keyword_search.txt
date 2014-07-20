@@ -1,0 +1,26 @@
+CREATE TEMP TABLE Freqs(docid VARCHAR(255), term VARCHAR(255), count INTEGER);
+
+INSERT INTO Freqs
+    SELECT * FROM Frequency
+    UNION
+    SELECT 'q' as docid, 'washington' as term, 1 as count
+    UNION
+    SELECT 'q' as docid, 'taxes' as term, 1 as count
+    UNION
+    SELECT 'q' as docid, 'treasury' as term, 1 as count;
+
+SELECT term_count
+FROM (
+    SELECT doc1, doc2, term, SUM(term_count) AS term_count
+    FROM (
+        SELECT f1.docid as doc1, f2.docid as doc2, f1.term, SUM(f1.count * f2.count) AS term_count
+        FROM Freqs f1, Freqs f2
+        WHERE f1.term = f2.term AND (f1.docid = 'q')
+        GROUP BY f1.docid, f2.docid
+        )
+    GROUP BY doc1, doc2
+    ORDER BY term_count DESC
+)
+LIMIT 1;
+
+DROP TABLE Freqs;

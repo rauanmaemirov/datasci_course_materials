@@ -1,0 +1,5 @@
+SELECT term_count FROM
+    (SELECT f1.docid as doc1, f2.docid as doc2, SUM(f1.count * f2.count) AS term_count
+    FROM Frequency f1, Frequency f2
+    WHERE f1.term = f2.term AND f1.docid < f2.docid AND (f1.docid = '10080_txt_crude' AND f2.docid = '17035_txt_earn')
+    GROUP BY f1.docid, f2.docid);
